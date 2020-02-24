@@ -55,12 +55,17 @@ router.put("/:id",
 });
 
 // Delete the project
-router.delete("/", (req,res,next) => {
-   try {
-
-   } catch(err) {
-      next(err);
-   }
+router.delete("/:id",
+            validateProjectID,
+            async (req,res,next) => {
+            try {
+              const result = await projectDB.remove(req.params.id);
+              if(result > 0) {                 
+                 res.status(204).end();
+              }
+            } catch(err) {
+                next(err);
+            }
 });
 
 function validateProjectID(req,res,next) {
