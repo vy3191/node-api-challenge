@@ -47,15 +47,15 @@ router.put("/:actionId",
             async (req,res,next) => {
               try {
               payload = {
-                 project_id: req.params.id,
+                project_id: req.params.id,
                  notes:req.body.notes,
                  description: req.body.description,
                  completed: req.body.completed
               }  
               const result  = await actionDB.update(req.params.actionId, payload );
-              console.log(result);
+              console.log('line56', result);
               if(result.id) {
-                 res.json(200).json(result);
+                 res.status(200).json(result);
               }
             } catch(err) {
                 next(err);
@@ -82,7 +82,7 @@ function validateActionID(req,res,next) {
                 req.action = action;
                 next();
              } else {
-               res.status(404).json({msg:`There is no project with the ID ${id}`});
+               res.status(404).json({msg:`There is no action with the ID ${id}`});
              }
            })
            .catch(err => next(err));
