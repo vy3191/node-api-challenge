@@ -24,21 +24,34 @@ router.get("/:id",validateProjectID, (req,res,next) => {
 });
 
 // Posts the projects.
-router.post("/", (req,res,next) => {
+router.post("/", validateProject, async (req,res,next) => {
    try {
-
+     const result = await projectDB.insert(req.project);
+     if(result.id && result.name && result.description) {
+         res.status(201).json(result);
+     }
    } catch(err) {
       next(err);
    }
 });
 
 // UPdate the projects
-router.put("/:id", (req,res,next) => {
-   try {
+router.put("/:id",
+            validateProjectID,
+            validateProject, 
+            async (req,res,next) => {
+              try {
+                  const id = req.params.id;
+                  const updatedProject = {...req.project, }
+                  const result = await projectDB.update(id, updatedProject);
+                  console.log(result);
+                  if(result.id) {
+                     res.status(200).json(result);
+                  }
 
-   } catch(err) {
-      next(err);
-   }
+              } catch(err) {
+                  next(err);
+              }
 });
 
 // Delete the project
@@ -69,7 +82,11 @@ function validateProject(req,res,next) {
    if(!req.body) res.status(400).json({ message: "missing project data" });
    if(!name) res.status(400).json({ message: "missing project name" });
    if(!description) res.status(400).json({ message: "missing project description" });
-   req.project = req.body;
+   req.project = {
+      name: req.body.name,
+      description: req.body.description,
+      completed: req.body.completed
+   }
    next();
 }
 
