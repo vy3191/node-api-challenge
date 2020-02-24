@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const projectDB = require('../data/helpers/projectModel');
+const actionRouters = require('../routers/actionsRouter');
+
+router.use("/:id/actions", actionRouters);
 
 // Get the projects
 router.get("/", async (req,res,next) => {
@@ -23,6 +26,19 @@ router.get("/:id",validateProjectID, (req,res,next) => {
    }
 });
 
+// Get the projects with actions
+router.get("/:id", 
+           validateProjectID, 
+           async (req,res,next) => {
+            try {
+              const projectWithActions = await projectDB.getProjectActions(req.params.id);
+                if(projectWithActions.id) {
+                  res.status(200).json(projectWithActions);
+                }              
+            } catch(err) {
+              next(err);
+            }
+});
 // Posts the projects.
 router.post("/", validateProject, async (req,res,next) => {
    try {
