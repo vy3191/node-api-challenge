@@ -19,10 +19,14 @@ const morgan = require('morgan');
 
 const PORT = 8500;
 const server = express();
+const projectRouters = require("./routers/projectRouters");
+const actionRouters = require("./routers/actionsRouter");
 
 server.use(helmet());
 server.use(morgan('tiny'));
 server.use(express.json());
+server.use("/api/projects", projectRouters);
+server.use("/api/actions", actionRouters);
 
 server.get("/", (req,res) => {
    res.status(200).json("App is up and running now.")
