@@ -14,4 +14,32 @@ Go code!
 */
 
 const express = require('express');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+const PORT = 8500;
 const server = express();
+
+server.use(helmet());
+server.use(morgan('tiny'));
+server.use(express.json());
+
+server.get("/", (req,res) => {
+   res.status(200).json("App is up and running now.")
+})
+
+server.use((req,res) => {
+   res.status(404).json({
+      msg:'Router not found'
+   })
+});
+
+server.use((err,req,res,next) => {
+    res.status(500).json({
+       msg:'Something went wrong with the server'
+    })
+});
+
+server.listen(PORT, (req,res) => {
+   console.log(`Server is up and running at http://localhost:${PORT}`);
+})
