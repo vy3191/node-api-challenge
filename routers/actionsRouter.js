@@ -16,8 +16,8 @@ router.get("/", async (req,res,next) => {
 });
 
 // Get the actionss by ID
-router.get("/:id",
-             validateProjectID, 
+router.get("/:actionId",
+            validateActionID, 
             async (req,res,next) => {
             try {
               res.status(200).json(req.action);
@@ -41,25 +41,41 @@ router.post("/",
 });
 
 // UPdate the actions
-router.put("/:id", (req,res,next) => {
-   try {
-
-   } catch(err) {
-      next(err);
-   }
+router.put("/:actionId",
+            validateActionID, 
+            validateActions,           
+            async (req,res,next) => {
+              try {
+              payload = {
+                 project_id: req.params.id,
+                 notes:req.body.notes,
+                 description: req.body.description,
+                 completed: req.body.completed
+              }  
+              const result  = await actionDB.update(req.params.actionId, payload );
+              console.log(result);
+              if(result.id) {
+                 res.json(200).json(result);
+              }
+            } catch(err) {
+                next(err);
+            }
 });
 
 // Delete the actions
-router.delete("/", (req,res,next) => {
+router.delete("/:actionId", validateActionID, async (req,res,next) => {
    try {
-
+      const result = await actionDB.remove(req.params.actionId);
+      if(result) {
+         res.status(204).end();
+      }
    } catch(err) {
       next(err);
    }
 });
 
-function validateProjectID(req,res,next) {
-  const id = req.params.id;
+function validateActionID(req,res,next) {
+  const id = req.params.actionId;
   actionDB.get(id)
            .then( (action) => {
              if(action) {
