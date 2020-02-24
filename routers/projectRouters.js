@@ -64,4 +64,13 @@ function validateProjectID(req,res,next) {
             .catch(err => next(err));
 }
 
+function validateProject(req,res,next) {
+   const {name, description, completed} = req.body;
+   if(!req.body) res.status(400).json({ message: "missing project data" });
+   if(!name) res.status(400).json({ message: "missing project name" });
+   if(!description) res.status(400).json({ message: "missing project description" });
+   req.project = req.body;
+   next();
+}
+
 module.exports = router;
