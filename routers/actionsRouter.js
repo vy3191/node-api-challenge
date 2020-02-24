@@ -27,12 +27,17 @@ router.get("/:id",
 });
 
 // Posts the actions.
-router.post("/", (req,res,next) => {
-   try {
-
-   } catch(err) {
-      next(err);
-   }
+router.post("/",
+       validateActions,
+       async (req,res,next) => {
+        try {
+          const action = actionDB.insert(req.action);
+          if(action.id) {
+             res.status(201).json(action)
+          }
+        } catch(err) {
+            next(err);
+        }
 });
 
 // UPdate the actions
