@@ -27,7 +27,7 @@ router.get("/:id",validateProjectID, (req,res,next) => {
 });
 
 // Get the projects with actions
-router.get("/:id", 
+router.get("/:id/actions", 
            validateProjectID, 
            async (req,res,next) => {
             try {

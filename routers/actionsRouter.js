@@ -31,7 +31,7 @@ router.post("/",
        validateActions,
        async (req,res,next) => {
         try {
-          const action = actionDB.insert(req.action);
+          const action = await actionDB.insert(req.action);
           if(action.id) {
              res.status(201).json(action)
           }
