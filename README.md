@@ -39,14 +39,20 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
 
 - [ ] Mention two parts of Express that you learned about this week.
+Routing: Routing is the main feature of the express, it breaks down the application into different request handlers for request that comes from the client.
+Middleware: Middleware is a function that intercepts a request coming to the client and process it, modify it according to the application needs passes it the other requests handlers in the application.
 
 - [ ] Describe Middleware?
+Middleware: Middleware is a function that intercepts a request coming to the client and process it, modify it according to the application needs passes it the other requests handlers in the application.
 
 - [ ] Describe a Resource?
+A Resource is an object which communicates with other resources ahd have a set of operations or methods that can be performed on it.
 
 - [ ] What can the API return to help clients know if a request was successful?
+A successful response object which includes response status like 200 and resource related objects.
 
 - [ ] How can we partition our application into sub-applications?
+We  divide the application into resources and build the WEB API's to perform the crud operation on these resource, using routing we can map incoming requests to the appropriate request handler based on the URL and HTTP Method used for each resource.
 
 ## Minimum Viable Product
 
